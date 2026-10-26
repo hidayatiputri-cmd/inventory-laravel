@@ -11,7 +11,10 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $products = Product::with('category')
-            ->when($request->search, fn ($q, $s) => $q->where('name', 'like', "%{$s}%"))
+            ->when($request->search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                      ->orWhere('sku', 'like', "%{$search}%");
+            })
             ->orderBy('name')
             ->paginate(10)
             ->withQueryString();
