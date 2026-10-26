@@ -1,5 +1,3 @@
-<?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Product;
@@ -8,6 +6,17 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function dashboard()
+    {
+        $totalProducts = Product::count();
+        $totalCategories = Category::count();
+        $lowStockProducts = Product::with('category')
+            ->whereColumn('stock', '<=', 'minimum_stock')
+            ->get();
+
+        return view('products.dashboard', compact('totalProducts', 'totalCategories', 'lowStockProducts'));
+    }
+
     public function index(Request $request)
     {
         $products = Product::with('category')

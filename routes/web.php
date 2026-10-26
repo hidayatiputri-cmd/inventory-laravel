@@ -1,11 +1,8 @@
-<?php
-
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('products.index');
-});
+// Rute utama mengarah ke Dashboard
+Route::get('/', [ProductController::class, 'dashboard'])->name('dashboard');
 
-// Resource Route untuk CRUD otomatis
+// Resource Route untuk CRUD Produk
 Route::resource('products', ProductController::class);
